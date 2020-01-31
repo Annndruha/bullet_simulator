@@ -10,14 +10,13 @@ public:
 	double v_x = 200;
 	double v_y = 200;
 
+	#ifdef ENABLE_OPENCV
 	Point cor;//Координата тела
 	Point mg;//координата конца стрелки силы тяжести
-	Point resistanse;//координата конца стрелки силы сопротивления
-
-	//Графические характеристики
-	Scalar color_main = black;
+	Point resistanse;//координата конца стрелки силы сопротивления	
+	Scalar color_main = black; //Цвета
 	Scalar color_trace = gray;
-	double radius_draw = 15;
+	#endif
 
 	//Физические характеристики
 	bool life = true; //активен если не достиг земли
@@ -35,13 +34,13 @@ public:
 	{
 		VelocityDegree(200, 45);
 	}
-	bullet_create(double velocity, double degree, double m=1, double r=0.01, Scalar ct = gray) // Конструктор с параметрами
-	{
-		VelocityDegree(velocity, degree);
-		mass = m;
-		radius = r;
-		color_trace = ct;
-	}
+	//bullet_create(double velocity, double degree, double m=1, double r=0.01, Scalar ct = gray) // Конструктор с параметрами
+	//{
+	//	VelocityDegree(velocity, degree);
+	//	mass = m;
+	//	radius = r;
+	//	color_trace = ct;
+	//}
 };
 
 //Формула Стокса
@@ -87,6 +86,7 @@ void PHYSICS(bullet_create* pointer, double dt)
 		bull.c_y += bull.v_y*dt;
 
 
+		#ifdef ENABLE_OPENCV
 		bull.cor.x = bull.c_x;
 		bull.cor.y = bull.c_y;
 
@@ -97,5 +97,6 @@ void PHYSICS(bullet_create* pointer, double dt)
 
 		bull.mg.x = bull.cor.x;
 		bull.mg.y = bull.cor.y + zoom * bull.mass*9.81;
+		#endif	
 	}
 }

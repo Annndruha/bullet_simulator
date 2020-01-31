@@ -1,9 +1,10 @@
 #pragma once
+#ifdef ENABLE_OPENCV
 using namespace cv;
 //----------- B ---G--- R
 Scalar white(255, 255, 255);
 Scalar gray(128, 128, 128);
-Scalar black(1,0, 0);
+Scalar black(1, 0, 0);
 
 Scalar red(0, 0, 255);
 Scalar green(0, 255, 0);
@@ -18,3 +19,4 @@ Scalar cyan(255, 255, 0);
 Scalar magneta(255, 0, 255);
 
 Scalar violet(255, 0, 128);
+#endif
