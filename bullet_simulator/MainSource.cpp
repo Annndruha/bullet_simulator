@@ -11,14 +11,14 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include<string.h>
+#include <string.h>
 
 using namespace std;
 using namespace cv;
 
-#include "Colors.h"//набор функций отвечающий за цвета
-#include "Physics.h"//набор функций отвечающий за расчёт физики
-#include "Display.h"//набор функций отвечающий за графику
+#include "headers/Colors.h"//набор функций отвечающий за цвета
+#include "headers/Physics.h"//набор функций отвечающий за расчёт физики
+#include "headers/Display.h"//набор функций отвечающий за графику
 
 bool EnableAnimation = true;
 const double SIMULATION_DELAY = 0.01857;// (для реального времени без лагов ставить  0.01857) 0.05
@@ -29,7 +29,7 @@ const int N = 3;
 bullet_create bullet[N];//Создание Nого количества тел
 
 display window;
-#include "AssistFunction.h"
+#include "headers/AssistFunction.h"
 int main()
 {
 	String window1 = { "Cannon" };
@@ -39,7 +39,7 @@ int main()
 	}
 	else { cout << "If you want animation, change EnableAnimation to true in line 23\n"; }
 
-
+	SET_BULLET_PARAMETRS();
 
 	int frame = 0;
 	bool l_c = LIFES_CHECK(T);

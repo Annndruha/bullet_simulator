@@ -99,4 +99,3 @@ void PHYSICS(bullet_create* pointer, double dt)
 		bull.mg.y = bull.cor.y + zoom * bull.mass*9.81;
 	}
 }
-

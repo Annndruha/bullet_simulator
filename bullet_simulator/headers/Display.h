@@ -11,7 +11,7 @@ public:
 		moveWindow(n, 300, 150);
 	}
 
-	Mat background = imread("background.JPG");
+	Mat background = imread("resources/background.JPG");
 	Mat draw = Mat::zeros(background.rows, background.cols, CV_8UC3);
 	Mat trace = Mat::zeros(background.rows, background.cols, CV_8UC3);
 	Mat out = Mat::zeros(background.rows, background.cols, CV_8UC3);
