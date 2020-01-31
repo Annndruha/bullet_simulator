@@ -1,6 +1,6 @@
-#pragma once
+п»ї#pragma once
 #ifdef ENABLE_OPENCV
-//Класс отрисовки графического окна
+//РљР»Р°СЃСЃ РѕС‚СЂРёСЃРѕРІРєРё РіСЂР°С„РёС‡РµСЃРєРѕРіРѕ РѕРєРЅР°
 class display
 {
 private:
@@ -29,21 +29,21 @@ public:
 };
 
 
-// Создание именованного окна
+// РЎРѕР·РґР°РЅРёРµ РёРјРµРЅРѕРІР°РЅРЅРѕРіРѕ РѕРєРЅР°
 void display::start(String window_name)
 {
 	namedWindow(window_name);
 	moveWindow(window_name, 300, 150);
 }
 
-// Показ кадра
+// РџРѕРєР°Р· РєР°РґСЂР°
 void display::show(String window_name)
 {
 	merge_layers();
 	imshow(window_name.c_str(), out);
 }
 
-//Функция попиксильного сведения двух слоёв
+//Р¤СѓРЅРєС†РёСЏ РїРѕРїРёРєСЃРёР»СЊРЅРѕРіРѕ СЃРІРµРґРµРЅРёСЏ РґРІСѓС… СЃР»РѕС‘РІ
 void display::merge_two_layers(Mat down_layer, Mat up_layer)
 {
 	for (int i = 0; i < down_layer.rows; i++)
@@ -52,8 +52,8 @@ void display::merge_two_layers(Mat down_layer, Mat up_layer)
 		uchar* ptr_down = (uchar*)(down_layer.data + i * down_layer.step);
 		for (int j = 0; j < down_layer.cols; j++)
 		{
-			// Из за плохой поддержки прозрачности в PpenCV, RGB = (0,0,0) используется в качестве прозрачного цвета
-			// А чёрный определён как RGB = (1,0,0)
+			// РР· Р·Р° РїР»РѕС…РѕР№ РїРѕРґРґРµСЂР¶РєРё РїСЂРѕР·СЂР°С‡РЅРѕСЃС‚Рё РІ PpenCV, RGB = (0,0,0) РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ РєР°С‡РµСЃС‚РІРµ РїСЂРѕР·СЂР°С‡РЅРѕРіРѕ С†РІРµС‚Р°
+			// Рђ С‡С‘СЂРЅС‹Р№ РѕРїСЂРµРґРµР»С‘РЅ РєР°Рє RGB = (1,0,0)
 			if ((ptr_up[3 * j + 0] != 0) || (ptr_up[3 * j + 1] != 0) || (ptr_up[3 * j + 2] != 0))
 			{
 				ptr_down[3 * j + 0] = ptr_up[3 * j + 0];
@@ -64,7 +64,7 @@ void display::merge_two_layers(Mat down_layer, Mat up_layer)
 	}
 }
 
-//Объединение слоёв графики
+//РћР±СЉРµРґРёРЅРµРЅРёРµ СЃР»РѕС‘РІ РіСЂР°С„РёРєРё
 void display::merge_layers()
 {
 	out = background.clone();
@@ -72,7 +72,7 @@ void display::merge_layers()
 	merge_two_layers(out, draw);
 };
 
-//Рисование координатной сетки
+//Р РёСЃРѕРІР°РЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚РЅРѕР№ СЃРµС‚РєРё
 void display::draw_scalegrid()
 {
 	int space = 100;
@@ -95,7 +95,7 @@ void display::draw_scalegrid()
 	arrowedLine(background, Point(100, 700), Point(100, 0), black, 3, LINE_AA, 0, 0.026);
 };
 
-//Функция отрисовки сил
+//Р¤СѓРЅРєС†РёСЏ РѕС‚СЂРёСЃРѕРІРєРё СЃРёР»
 void display::draw_forces(bullet_create* pointer)
 {
 	bullet_create& bull = *pointer;
@@ -117,39 +117,39 @@ void display::draw_forces(bullet_create* pointer)
 
 };
 
-//Функция отрисовки следа
+//Р¤СѓРЅРєС†РёСЏ РѕС‚СЂРёСЃРѕРІРєРё СЃР»РµРґР°
 void display::draw_trace(bullet_create* pointer)
 {
 	bullet_create& bull = *pointer;
-	circle(trace, bull.cor, 2, bull.color_trace, -1, 8);//рисование следа пули на слое trace
+	circle(trace, bull.cor, 2, bull.color_trace, -1, 8);//СЂРёСЃРѕРІР°РЅРёРµ СЃР»РµРґР° РїСѓР»Рё РЅР° СЃР»РѕРµ trace
 };
 
-//Функция отрисовки снаряда
+//Р¤СѓРЅРєС†РёСЏ РѕС‚СЂРёСЃРѕРІРєРё СЃРЅР°СЂСЏРґР°
 void display::draw_bullet(bullet_create* pointer)
 {
 	bullet_create& bull = *pointer;
-	circle(draw, bull.cor, 15, bull.color_main, -1, 8);//рисование пули на слое draw
+	circle(draw, bull.cor, 15, bull.color_main, -1, 8);//СЂРёСЃРѕРІР°РЅРёРµ РїСѓР»Рё РЅР° СЃР»РѕРµ draw
 };
 
-//Функция отрисовки снаряда
+//Р¤СѓРЅРєС†РёСЏ РѕС‚СЂРёСЃРѕРІРєРё СЃРЅР°СЂСЏРґР°
 void display::draw_bullet(bullet_create* pointer, int n)
 {
 	bullet_create& bull = *pointer;
-	circle(draw, bull.cor, 15, bull.color_main, -1, 8);//рисование пули на слое draw
+	circle(draw, bull.cor, 15, bull.color_main, -1, 8);//СЂРёСЃРѕРІР°РЅРёРµ РїСѓР»Рё РЅР° СЃР»РѕРµ draw
 	String k = std::to_string(n + 1);
-	putText(draw, k, bull.cor - Point(9, -8), FONT_HERSHEY_DUPLEX, 0.8, white, 0, 8, false);//Номер снаряда
+	putText(draw, k, bull.cor - Point(9, -8), FONT_HERSHEY_DUPLEX, 0.8, white, 0, 8, false);//РќРѕРјРµСЂ СЃРЅР°СЂСЏРґР°
 };
 
-//Функция отрисовки времени симуляции
+//Р¤СѓРЅРєС†РёСЏ РѕС‚СЂРёСЃРѕРІРєРё РІСЂРµРјРµРЅРё СЃРёРјСѓР»СЏС†РёРё
 void display::draw_time(double T)
 {
 	String k = std::to_string(T);
 	k = k.substr(0, k.size() - 2);
 	String r = "t= " + k + " c";
-	putText(draw, r, Point(200, 760), FONT_HERSHEY_SIMPLEX, 0.8, black, 2, 8, false);//Номер снаряда
+	putText(draw, r, Point(200, 760), FONT_HERSHEY_SIMPLEX, 0.8, black, 2, 8, false);//РќРѕРјРµСЂ СЃРЅР°СЂСЏРґР°
 };
 
-// Отрисовка кадра. time - время симуляции, bullet_number - номер снаряда
+// РћС‚СЂРёСЃРѕРІРєР° РєР°РґСЂР°. time - РІСЂРµРјСЏ СЃРёРјСѓР»СЏС†РёРё, bullet_number - РЅРѕРјРµСЂ СЃРЅР°СЂСЏРґР°
 void display::draw_frame(bullet_create* pointer, double time, int N)
 {
 	for (int n = 0; n < N; n++)
@@ -162,7 +162,7 @@ void display::draw_frame(bullet_create* pointer, double time, int N)
 	}
 }
 
-// Очистка слоя draw
+// РћС‡РёСЃС‚РєР° СЃР»РѕСЏ draw
 void display::clear_draw() {
 	draw = NULL;
 }

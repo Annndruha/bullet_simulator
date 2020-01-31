@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 std::default_random_engine generator(time(NULL));
 
 int my_rangint_gen(int a, int b)

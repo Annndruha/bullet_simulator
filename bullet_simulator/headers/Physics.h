@@ -1,29 +1,29 @@
-#pragma once
+п»ї#pragma once
 
-//Класс для описания характеристик снаряда
+//РљР»Р°СЃСЃ РґР»СЏ РѕРїРёСЃР°РЅРёСЏ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРє СЃРЅР°СЂСЏРґР°
 class bullet_create
 {
 public:
-	double c_x = 100; //Положение и скорость
+	double c_x = 100; //РџРѕР»РѕР¶РµРЅРёРµ Рё СЃРєРѕСЂРѕСЃС‚СЊ
 	double c_y = 700;
 	double v_x = 200;
 	double v_y = -200;
 
 	#ifdef ENABLE_OPENCV
-	Point cor;//Координата тела
-	Point mg;//координата конца стрелки силы тяжести
-	Point resistanse;//координата конца стрелки силы сопротивления	
-	Scalar color_main = black; //Цвет
-	Scalar color_trace = gray; //Цвет следа
+	Point cor;//РљРѕРѕСЂРґРёРЅР°С‚Р° С‚РµР»Р°
+	Point mg;//РєРѕРѕСЂРґРёРЅР°С‚Р° РєРѕРЅС†Р° СЃС‚СЂРµР»РєРё СЃРёР»С‹ С‚СЏР¶РµСЃС‚Рё
+	Point resistanse;//РєРѕРѕСЂРґРёРЅР°С‚Р° РєРѕРЅС†Р° СЃС‚СЂРµР»РєРё СЃРёР»С‹ СЃРѕРїСЂРѕС‚РёРІР»РµРЅРёСЏ	
+	Scalar color_main = black; //Р¦РІРµС‚
+	Scalar color_trace = gray; //Р¦РІРµС‚ СЃР»РµРґР°
 	#endif
 
-	//Физические характеристики
-	bool life = true; //активен если не достиг земли
-	double mass = 1;//масса по умолчанию
-	double radius = 0.02;//радиус по умолчанию
+	//Р¤РёР·РёС‡РµСЃРєРёРµ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєРё
+	bool life = true; //Р°РєС‚РёРІРµРЅ РµСЃР»Рё РЅРµ РґРѕСЃС‚РёРі Р·РµРјР»Рё
+	double mass = 1;//РјР°СЃСЃР° РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+	double radius = 0.02;//СЂР°РґРёСѓСЃ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 	double drag_coefficient = 0.295;
 
-	void SpeedDegree(double v, double a)//перевод скорости под углом в проекции
+	void SpeedDegree(double v, double a)//РїРµСЂРµРІРѕРґ СЃРєРѕСЂРѕСЃС‚Рё РїРѕРґ СѓРіР»РѕРј РІ РїСЂРѕРµРєС†РёРё
 	{
 		v_x = v * cos(a*3.141592 / 180);
 		v_y = -v * sin(a*3.141592 / 180);
@@ -38,14 +38,14 @@ public:
 	}
 };
 
-//Обобщенная формула из википедии
+//РћР±РѕР±С‰РµРЅРЅР°СЏ С„РѕСЂРјСѓР»Р° РёР· РІРёРєРёРїРµРґРёРё
 double resistance_force(bullet_create *pointer)
 {
 	bullet_create &bull = *pointer;
 	return  bull.drag_coefficient * 1.2041 * (pow(bull.v_x, 2) + pow(bull.v_y, 2)) * 3.1415 * pow(bull.radius, 2) / 2;
 };
 
-//Основная функция описывающая движение снаряда
+//РћСЃРЅРѕРІРЅР°СЏ С„СѓРЅРєС†РёСЏ РѕРїРёСЃС‹РІР°СЋС‰Р°СЏ РґРІРёР¶РµРЅРёРµ СЃРЅР°СЂСЏРґР°
 void PHYSICS(bullet_create *pointer, double dt, int N)
 {
 	for (int n = 0; n < N; n++)
@@ -72,7 +72,7 @@ void PHYSICS(bullet_create *pointer, double dt, int N)
 			bull.cor.x = bull.c_x;
 			bull.cor.y = bull.c_y;
 
-			// Для рисования векторов сил
+			// Р”Р»СЏ СЂРёСЃРѕРІР°РЅРёСЏ РІРµРєС‚РѕСЂРѕРІ СЃРёР»
 			double zoom = 150;
 			bull.resistanse.x = bull.cor.x + F_x * zoom - 1;
 			bull.resistanse.y = bull.cor.y + (F_y - bull.mass * 9.81) * zoom;
@@ -84,7 +84,7 @@ void PHYSICS(bullet_create *pointer, double dt, int N)
 	}
 }
 
-//Функция провеки "жизни" всех снарядов
+//Р¤СѓРЅРєС†РёСЏ РїСЂРѕРІРµРєРё "Р¶РёР·РЅРё" РІСЃРµС… СЃРЅР°СЂСЏРґРѕРІ
 bool LIFES_CHECK(double T, bullet_create *pointer, int N)
 {
 	
@@ -96,7 +96,7 @@ bool LIFES_CHECK(double T, bullet_create *pointer, int N)
 		if (bullet.life && !(int(bullet.c_y) < 700) && (int(bullet.c_x) >= 0))
 		{
 			bullet.life = false;
-			std::cout << "Distance[" << n << "]= " << bullet.c_x - 100 << "\tt= " << T << std::endl;//Вывод в консоль рассотяний полёта снарядов
+			std::cout << "Distance[" << n << "]= " << bullet.c_x - 100 << "\tt= " << T << std::endl;//Р’С‹РІРѕРґ РІ РєРѕРЅСЃРѕР»СЊ СЂР°СЃСЃРѕС‚СЏРЅРёР№ РїРѕР»С‘С‚Р° СЃРЅР°СЂСЏРґРѕРІ
 		}
 
 		if (bullet.life == true) { lifes = true; }
@@ -104,7 +104,7 @@ bool LIFES_CHECK(double T, bullet_create *pointer, int N)
 	return lifes;
 };
 
-//Функция нахождения "снаряда - победителя"
+//Р¤СѓРЅРєС†РёСЏ РЅР°С…РѕР¶РґРµРЅРёСЏ "СЃРЅР°СЂСЏРґР° - РїРѕР±РµРґРёС‚РµР»СЏ"
 void COUT_WINNER(bullet_create* pointer, int N)
 {
 	int k = 0;
