@@ -146,7 +146,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="headers\AssistFunction.h" />
     <ClInclude Include="headers\Colors.h" />
     <ClInclude Include="headers\Display.h" />
     <ClInclude Include="headers\Physics.h" />

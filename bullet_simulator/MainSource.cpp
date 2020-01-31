@@ -1,21 +1,18 @@
 /*Программа для симуляции и визуализации полёта снаряда, 
-выпущенного из пушки, с учётом сопротивления воздуха.
+и расчёта максимальной дистанции полёта, с учётом сопротивления воздуха.
 Маракулин Андрей 2018*/
 
-//#define ENABLE_OPENCV // Закомментируйте чтобы отключить привязку к OpenCV
-
+#define ENABLE_OPENCV // Закомментируйте чтобы отключить привязку к OpenCV
 #ifdef ENABLE_OPENCV
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
 #endif
 
-#include <math.h>
-#include <iostream>
 #include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <iostream>
+#include <windows.h>
+#include <random>
 
 #include "headers/Colors.h"// Определение цветов
 #include "headers/Physics.h"//набор функций отвечающий за расчёт физики
@@ -23,44 +20,42 @@
 
 
 double simulation_time = 0;
-const double simulation_delay = 0.01857;// (для реального времени без лагов ставить  0.01857) 0.05
+const double simulation_delay = 0.01857;// Влияет на точность и скорость симуляции. Меньше - точнее
 
-
-const int N = 3;
-bullet_create bullet[N];//Создание Nого количества тел
-
-
-#include "headers/AssistFunction.h"
 int main()
 {
 	#ifdef ENABLE_OPENCV
 	display window;
 	window.start("Cannon");
 	window.draw_scalegrid();
-	window.enable_trace = false;
-	window.enable_forces = false;
+	window.enable_trace = true;
+	window.enable_forces = true;
+	window.enable_bullet_number = true;
 	#endif
 
-	SET_BULLET_PARAMETRS();
-	do
-	{
-		for (int n = 0; n < N; n++)
-		{
-			PHYSICS(&bullet[n], simulation_delay);//ЗАПУСК ФИЗИЧЕСКОГО ДВИЖКА Выполнение физической итерации с интервалом
-			#ifdef ENABLE_OPENCV
-			window.draw_frame(&bullet[n], simulation_time, n);
-			#endif
-		}
+
+	const int N = 4;
+	bullet_create bullet[N];//Создание N случайных снарядов
+
+	//Определение характеристик 0-ого снаряда как пули автомата Калашникова
+	bullet[0].SpeedDegree(800, 45); //[м/с] [градусы]
+	bullet[0].radius = 0.00762; // [м]
+	bullet[0].mass = 0.012;// [кг]
+	bullet[0].drag_coefficient = 0.295; // безразмерная
+
+	do{
+		PHYSICS(bullet, simulation_delay, N);//ЗАПУСК ФИЗИЧЕСКОГО ДВИЖКА
 		simulation_time += simulation_delay;
-		
+
 		#ifdef ENABLE_OPENCV
-		window.show("Cannon"); //показ полученого изображения
+		window.draw_frame(bullet, simulation_time, N);
+		window.show("Cannon");
 		window.clear_draw();
-		if (waitKey(1) == 27) return 0; //Промежуток между ожиданиями клавиши == между кадрами
+		if (waitKey(1) == 27) return 0;
 		#endif
 	}
-	while (LIFES_CHECK(simulation_time));
+	while (LIFES_CHECK(simulation_time, bullet, N));
 
-	COUT_WINNER();//Нахождение победителя и дистанции
+	COUT_WINNER(bullet, N);//Нахождение снаряда с лучше дистанцией
 	system("pause");
 }

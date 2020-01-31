@@ -18,14 +18,13 @@ private:
 	void merge_layers();
 
 public:
-	int scale = 100;
-	bool enable_trace = true;
-	bool enable_forces = true;
+	bool enable_trace = false;
+	bool enable_forces = false;
+	bool enable_bullet_number = false;
 	void start(String window_name);
 	void show(String window_name);
 	void draw_scalegrid();
-	void draw_frame(bullet_create* pointer, double time);
-	void draw_frame(bullet_create* pointer, double time, int bullet_number);
+	void draw_frame(bullet_create* pointer, double time, int N);
 	void clear_draw();
 };
 
@@ -76,7 +75,8 @@ void display::merge_layers()
 //Рисование координатной сетки
 void display::draw_scalegrid()
 {
-	for (int i = 700; i > 0; i = i - scale)
+	int space = 100;
+	for (int i = 700; i > 0; i = i - space)
 	{
 		line(background, Point(100, i), Point(background.cols, i), gray, 1, LINE_AA);
 		String k = std::to_string(700 - i);
@@ -84,7 +84,7 @@ void display::draw_scalegrid()
 	}
 
 
-	for (int i = 100; i < background.cols; i = i + scale)
+	for (int i = 100; i < background.cols; i = i + space)
 	{
 		line(background, Point(i, 1), Point(i, 700), gray, 1, LINE_AA);
 		String k = std::to_string(i - 100);
@@ -149,20 +149,17 @@ void display::draw_time(double T)
 	putText(draw, r, Point(200, 760), FONT_HERSHEY_SIMPLEX, 0.8, black, 2, 8, false);//Номер снаряда
 };
 
-// Отрисовка кадра. time - время симуляции
-void display::draw_frame(bullet_create* pointer, double time) {
-	if (enable_forces) { draw_forces(pointer); }
-	if (enable_trace) { draw_trace(pointer); }
-	draw_bullet(pointer);
-	draw_time(time);
-}
-
 // Отрисовка кадра. time - время симуляции, bullet_number - номер снаряда
-void display::draw_frame(bullet_create* pointer, double time, int bullet_number) {
-	if (enable_forces) { draw_forces(pointer); }
-	if (enable_trace) { draw_trace(pointer); }
-	draw_bullet(pointer, bullet_number);
-	draw_time(time);
+void display::draw_frame(bullet_create* pointer, double time, int N)
+{
+	for (int n = 0; n < N; n++)
+	{
+		if (enable_forces) { draw_forces(pointer+n); }
+		if (enable_trace) { draw_trace(pointer+n); }
+		if (enable_bullet_number){draw_bullet(pointer+n, n);} 
+		else{draw_bullet(pointer+n);}
+		draw_time(time);
+	}
 }
 
 // Очистка слоя draw
