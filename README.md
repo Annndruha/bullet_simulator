@@ -14,7 +14,7 @@ Simulated real atmosphere characteristics during on bullet.
 
 **Расчёт сопротивления**
 
-+ [Формула расчёта сопротивления](https://en.wikipedia.org/wiki/Drag_coefficient) применима на скорости меньше звуковой и расстояниях полёта не вносящих вклад в давление и слу тяготения.
++ [Формула расчёта сопротивления](https://en.wikipedia.org/wiki/Drag_coefficient) применима на скорости меньше звуковой и расстояниях полёта не вносящих вклад в давление и силу тяготения.
 
   `F= c*p*v^2*s/2`
   
